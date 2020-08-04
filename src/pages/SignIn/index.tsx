@@ -8,6 +8,8 @@ import { FormHandles } from '@unform/core';
 import Icon from 'react-native-vector-icons/Feather';
 import logoImg from '../../assets/logo.png';
 
+import { useAuth } from '../../hooks/AuthContext';
+
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 
@@ -32,6 +34,8 @@ const SignIn: React.FC = () => {
     const passwordRef = useRef<TextInput>(null);
     const navigation = useNavigation();
 
+    const { signIn } = useAuth();
+
 
     const handleSignIn = useCallback(async (data: SignInFormData) => {
         try {
@@ -47,6 +51,11 @@ const SignIn: React.FC = () => {
             await schema.validate(data, {
                 abortEarly: false
             });
+
+            await signIn({
+                email: data.email,
+                password: data.password
+            })
 
 
         } catch (error) {

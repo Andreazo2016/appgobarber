@@ -1,7 +1,8 @@
 import React, { useRef, useCallback } from 'react';
-import { Image,Alert, View, TextInput, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
+import { Image, Alert, View, TextInput, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as Yup from 'yup';
+import api from '../../services/api';
 import getValidationErrors from '../../utils/getValidationErros';
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
@@ -49,6 +50,14 @@ const SignUp: React.FC = () => {
                 abortEarly: false
             });
 
+            await api.post('/users', data);
+
+            Alert.alert(
+                'Cadastro realizado com sucesso',
+                'Você já pode fazer o login na aplicação'
+            );
+
+            navigation.goBack();
 
         } catch (error) {
             if (error instanceof Yup.ValidationError) {
